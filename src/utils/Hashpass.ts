@@ -1,12 +1,10 @@
-import {hash,genSalt}from "bcrypt-ts";
+import bcrypt from "bcrypt";
 
-const salt = await genSalt(10);
 
 
 export const hashPass = async(password:string):Promise<String>=>{
 
-    const result = await hash(password,salt);
-
-    return result;
+    const saltRound =10;
+    return await bcrypt.hash(password,saltRound);
 }
 

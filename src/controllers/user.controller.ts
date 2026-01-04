@@ -3,7 +3,7 @@ dotenv.config();
 import {User} from "../models/user.model.js"
 import express,{Request,Response} from "express"
 import { hashPass } from "../utils/Hashpass.js";
-import {compare} from "bcrypt-ts";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 
@@ -50,7 +50,7 @@ export const login = async(req:Request,res:Response):Promise<any>=>{
         const {email,password} = req.body;
         const user = await User.findOne({email});
         if(!user)return res.status(401).json({success:false,message:'Invalid credentials'});
-        const passCompare = await compare(password,user.password);
+        const passCompare = await bcrypt.compare(password,user.password);
         if(!passCompare) return res.status(401).json({success:false,message:'Invalid credentials'});
 
         const token = jwt.sign({userId:user._id, role:user.role},process.env.JWT_SECRET as string, { expiresIn: "7d" })
