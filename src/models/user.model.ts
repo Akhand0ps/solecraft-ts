@@ -11,6 +11,8 @@ interface Address{
 
 }
 
+type Role = "ADMIN"|"USER";
+
 interface IUser{
     name:string,
     email:string,
@@ -18,9 +20,9 @@ interface IUser{
     createdAt:Date,
     cart?:ObjectId,
     orders?:ObjectId[],
-    role:string,
+    role:Role,
     addresses: Address[],
-    Token:String
+    token:string
 }
 
 
@@ -77,7 +79,7 @@ const UserSchema = new Schema<IUser>({
             ref:"Order"
         }
     ],
-    Token:{
+    token:{
         type:String,
     },
 
